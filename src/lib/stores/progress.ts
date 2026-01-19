@@ -93,11 +93,13 @@ export function getProgressPercent(progress: LevelProgress | null | undefined, l
 	const sessionPercent = Math.min(100, (progress.sessionsAtLevel / req.minSessions) * 100);
 	const minutesPercent = Math.min(100, (progress.totalMinutesAtLevel / req.minTotalMinutes) * 100);
 	const edgesPercent = Math.min(100, (progress.totalEdgesAtLevel / req.minEdges) * 100);
-	const climaxPercent = req.minClimaxRate > 0 
-		? Math.min(100, (progress.climaxRate / req.minClimaxRate) * 100)
-		: 100;
-
-	return Math.round((sessionPercent + minutesPercent + edgesPercent + climaxPercent) / 4);
+	
+	if (req.minClimaxRate > 0) {
+		const climaxPercent = Math.min(100, (progress.climaxRate / req.minClimaxRate) * 100);
+		return Math.round((sessionPercent + minutesPercent + edgesPercent + climaxPercent) / 4);
+	}
+	
+	return Math.round((sessionPercent + minutesPercent + edgesPercent) / 3);
 }
 
 export function getMasteryDetails(progress: LevelProgress | null | undefined, levelId: number): {
