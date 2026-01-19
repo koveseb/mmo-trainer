@@ -63,3 +63,14 @@ export async function saveSettings(settings: Settings): Promise<void> {
 	await ensureDir(DATA_DIR);
 	await writeFile(SETTINGS_FILE, JSON.stringify(settings, null, 2));
 }
+
+export async function clearAllSessions(): Promise<void> {
+	await ensureDir(SESSIONS_DIR);
+	const files = await readdir(SESSIONS_DIR);
+	const { unlink } = await import('fs/promises');
+	for (const file of files) {
+		if (file.endsWith('.json')) {
+			await unlink(join(SESSIONS_DIR, file));
+		}
+	}
+}

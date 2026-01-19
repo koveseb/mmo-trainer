@@ -12,6 +12,8 @@
 	let saving = $state(false);
 	let saved = $state(false);
 	let showLockedWarning = $state<number | null>(null);
+	let showResetConfirm = $state(false);
+	let resetting = $state(false);
 
 	async function loadData() {
 		try {
@@ -83,6 +85,22 @@
 			unlocked: levelId === 1,
 			mastered: false
 		};
+	}
+
+	async function resetAllProgress() {
+		resetting = true;
+		try {
+			await fetch('/api/sessions', { method: 'DELETE' });
+			settings.currentLevel = 1;
+			await saveSettings();
+			sessions = [];
+			progressStore.loadFromSessions([]);
+			showResetConfirm = false;
+		} catch {
+			// Handle error
+		} finally {
+			resetting = false;
+		}
 	}
 </script>
 
@@ -198,6 +216,39 @@
 			{#if saved}
 				<div class="text-center text-purple-400 text-sm">Settings saved!</div>
 			{/if}
+
+			<section class="pt-6 border-t border-slate-700">
+				<h2 class="text-lg font-bold text-white mb-3">Danger Zone</h2>
+				{#if !showResetConfirm}
+					<button
+						onclick={() => showResetConfirm = true}
+						class="w-full p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-colors text-left"
+					>
+						<div class="font-bold">Reset All Progress</div>
+						<div class="text-sm opacity-80">Delete all sessions and start fresh from Level 1</div>
+					</button>
+				{:else}
+					<div class="p-4 rounded-xl bg-red-500/20 border border-red-500/50 space-y-3">
+						<p class="text-red-400 font-bold">Are you sure?</p>
+						<p class="text-sm text-red-300/80">This will permanently delete all {sessions.length} sessions and reset your progress. This cannot be undone.</p>
+						<div class="flex gap-3">
+							<button
+								onclick={resetAllProgress}
+								disabled={resetting}
+								class="flex-1 py-2 px-4 rounded-lg bg-red-600 text-white font-bold hover:bg-red-500 transition-colors disabled:opacity-50"
+							>
+								{resetting ? 'Resetting...' : 'Yes, Reset Everything'}
+							</button>
+							<button
+								onclick={() => showResetConfirm = false}
+								class="flex-1 py-2 px-4 rounded-lg bg-slate-700 text-slate-300 font-bold hover:bg-slate-600 transition-colors"
+							>
+								Cancel
+							</button>
+						</div>
+					</div>
+				{/if}
+			</section>
 		</div>
 	{/if}
 </div>
