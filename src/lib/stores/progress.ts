@@ -22,6 +22,7 @@ function createProgressStore() {
 				sessionsAtLevel.length >= req.minSessions &&
 				totalMinutes >= req.minTotalMinutes &&
 				totalEdges >= req.minEdges &&
+				totalClimaxes >= req.minClimaxes &&
 				climaxRate >= req.minClimaxRate;
 
 			const previousLevelMastered = index === 0 || calculatePreviousMastered(sessions, index);
@@ -58,6 +59,7 @@ function createProgressStore() {
 			sessionsAtPrev.length >= req.minSessions &&
 			totalMinutes >= req.minTotalMinutes &&
 			totalEdges >= req.minEdges &&
+			totalClimaxes >= req.minClimaxes &&
 			climaxRate >= req.minClimaxRate
 		);
 	}
@@ -93,25 +95,28 @@ export function getProgressPercent(progress: LevelProgress | null | undefined, l
 	const sessionPercent = Math.min(100, (progress.sessionsAtLevel / req.minSessions) * 100);
 	const minutesPercent = Math.min(100, (progress.totalMinutesAtLevel / req.minTotalMinutes) * 100);
 	const edgesPercent = Math.min(100, (progress.totalEdgesAtLevel / req.minEdges) * 100);
+	const climaxesPercent = Math.min(100, (progress.totalClimaxesAtLevel / req.minClimaxes) * 100);
 	
 	if (req.minClimaxRate > 0) {
-		const climaxPercent = Math.min(100, (progress.climaxRate / req.minClimaxRate) * 100);
-		return Math.round((sessionPercent + minutesPercent + edgesPercent + climaxPercent) / 4);
+		const climaxRatePercent = Math.min(100, (progress.climaxRate / req.minClimaxRate) * 100);
+		return Math.round((sessionPercent + minutesPercent + edgesPercent + climaxesPercent + climaxRatePercent) / 5);
 	}
 	
-	return Math.round((sessionPercent + minutesPercent + edgesPercent) / 3);
+	return Math.round((sessionPercent + minutesPercent + edgesPercent + climaxesPercent) / 4);
 }
 
 export function getMasteryDetails(progress: LevelProgress | null | undefined, levelId: number): {
 	sessions: { current: number; required: number; met: boolean };
 	minutes: { current: number; required: number; met: boolean };
 	edges: { current: number; required: number; met: boolean };
+	climaxes: { current: number; required: number; met: boolean };
 	climaxRate: { current: number; required: number; met: boolean };
 } {
 	const defaultResult = {
 		sessions: { current: 0, required: 0, met: true },
 		minutes: { current: 0, required: 0, met: true },
 		edges: { current: 0, required: 0, met: true },
+		climaxes: { current: 0, required: 0, met: true },
 		climaxRate: { current: 0, required: 0, met: true }
 	};
 	
@@ -136,6 +141,11 @@ export function getMasteryDetails(progress: LevelProgress | null | undefined, le
 			current: progress.totalEdgesAtLevel,
 			required: req.minEdges,
 			met: progress.totalEdgesAtLevel >= req.minEdges
+		},
+		climaxes: {
+			current: progress.totalClimaxesAtLevel,
+			required: req.minClimaxes,
+			met: progress.totalClimaxesAtLevel >= req.minClimaxes
 		},
 		climaxRate: {
 			current: progress.climaxRate,

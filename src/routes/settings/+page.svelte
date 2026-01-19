@@ -187,6 +187,10 @@
 											<span class="opacity-60">Edges</span>
 											<span class="{details.edges.met ? 'text-green-400' : ''}">{details.edges.current}/{details.edges.required}</span>
 										</div>
+										<div class="flex justify-between">
+											<span class="opacity-60">Climaxes</span>
+											<span class="{details.climaxes.met ? 'text-green-400' : ''}">{details.climaxes.current}/{details.climaxes.required}</span>
+										</div>
 										{#if level.requirements.minClimaxRate > 0}
 											<div class="flex justify-between">
 												<span class="opacity-60">Climax Rate</span>

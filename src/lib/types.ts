@@ -35,6 +35,7 @@ export interface LevelRequirements {
 	minSessions: number;
 	minTotalMinutes: number;
 	minEdges: number;
+	minClimaxes: number;
 	minClimaxRate: number;
 }
 

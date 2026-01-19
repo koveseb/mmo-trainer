@@ -106,6 +106,10 @@
 			const remaining = details.edges.required - details.edges.current;
 			return `${remaining} more edge${remaining === 1 ? '' : 's'} to master`;
 		}
+		if (!details.climaxes.met) {
+			const remaining = details.climaxes.required - details.climaxes.current;
+			return `${remaining} more climax${remaining === 1 ? '' : 'es'} to master`;
+		}
 		if (level.requirements.minClimaxRate > 0 && !details.climaxRate.met) {
 			return `Reach ${details.climaxRate.required}% climax rate`;
 		}
