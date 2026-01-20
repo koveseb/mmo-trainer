@@ -15,7 +15,7 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 sveltekit
 
-COPY --from=builder --chown=sveltekit:nodejs /app/.output ./.output
+COPY --from=builder --chown=sveltekit:nodejs /app/build ./build
 
 RUN mkdir -p /app/data && chown -R sveltekit:nodejs /app/data
 
@@ -27,6 +27,6 @@ ENV HOST=0.0.0.0
 
 EXPOSE 3000
 
-WORKDIR /app/.output/server
+WORKDIR /app/build
 
 CMD ["node", "index.js"]
