@@ -1,6 +1,6 @@
 services:
   mmo-trainer:
-    image: ghcr.io/YOUR_USERNAME/mmo-trainer:latest
+    image: ghcr.io/koveseb/mmo-trainer:latest
     # build: .  # Uncomment if building locally
     container_name: mmo-trainer
     restart: unless-stopped
