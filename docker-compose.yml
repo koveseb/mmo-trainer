@@ -21,3 +21,5 @@ services:
 
 volumes:
   mmo-trainer-data:
+    external: true
+    name: mmo_trainer_mmo-trainer-data
