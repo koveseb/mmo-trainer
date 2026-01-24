@@ -3,7 +3,7 @@ import { existsSync } from 'fs';
 import { join } from 'path';
 import type { Session, Settings } from '$lib/types';
 
-const DATA_DIR = 'data';
+const DATA_DIR = '/app/data';
 const SESSIONS_DIR = join(DATA_DIR, 'sessions');
 const SETTINGS_FILE = join(DATA_DIR, 'settings.json');
 
