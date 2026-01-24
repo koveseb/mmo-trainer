@@ -222,6 +222,39 @@
 			{/if}
 
 			<section class="pt-6 border-t border-slate-700">
+				<h2 class="text-lg font-bold text-white mb-3">Arousal Check</h2>
+				<p class="text-sm text-slate-400 mb-4">How often to ask about your arousal level during a session.</p>
+				
+				<div class="space-y-3">
+					<div class="flex items-center justify-between">
+						<span class="text-slate-300">Check interval</span>
+						<span class="text-white font-bold tabular-nums">{settings.arousalCheckInterval ? `${settings.arousalCheckInterval / 60} min` : 'Off'}</span>
+					</div>
+					
+					<input
+						type="range"
+						min="0"
+						max="900"
+						step="60"
+						bind:value={settings.arousalCheckInterval}
+						onchange={saveSettings}
+						class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-500"
+					/>
+					
+					<div class="flex justify-between text-xs text-slate-500">
+						<span>Off</span>
+						<span>15 min</span>
+					</div>
+
+					{#each levels.filter(l => l.id === settings.currentLevel) as currentLevelConfig}
+						<p class="text-xs text-slate-500">
+							Suggested for Level {settings.currentLevel}: {currentLevelConfig.arousalCheckIntervalSeconds / 60} min
+						</p>
+					{/each}
+				</div>
+			</section>
+
+			<section class="pt-6 border-t border-slate-700">
 				<h2 class="text-lg font-bold text-white mb-3">Danger Zone</h2>
 				{#if !showResetConfirm}
 					<button

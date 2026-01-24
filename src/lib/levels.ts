@@ -13,7 +13,7 @@ export const levels: LevelConfig[] = [
 		description: 'Learn the basics with 5-minute stroke periods',
 		strokeSeconds: 300,
 		restSeconds: 60,
-		arousalCheckIntervalSeconds: 60,
+		arousalCheckIntervalSeconds: 180,
 		requirements: {
 			minSessions: 20,
 			minTotalMinutes: 300,
@@ -28,7 +28,7 @@ export const levels: LevelConfig[] = [
 		description: 'Build consistency with 10-minute strokes',
 		strokeSeconds: 600,
 		restSeconds: 55,
-		arousalCheckIntervalSeconds: 55,
+		arousalCheckIntervalSeconds: 240,
 		requirements: {
 			minSessions: 25,
 			minTotalMinutes: 450,
@@ -43,7 +43,7 @@ export const levels: LevelConfig[] = [
 		description: 'Develop control with 15-minute strokes',
 		strokeSeconds: 900,
 		restSeconds: 50,
-		arousalCheckIntervalSeconds: 50,
+		arousalCheckIntervalSeconds: 300,
 		requirements: {
 			minSessions: 28,
 			minTotalMinutes: 600,
@@ -58,7 +58,7 @@ export const levels: LevelConfig[] = [
 		description: 'Refine your edge awareness with 25-minute strokes',
 		strokeSeconds: 1500,
 		restSeconds: 45,
-		arousalCheckIntervalSeconds: 45,
+		arousalCheckIntervalSeconds: 360,
 		requirements: {
 			minSessions: 28,
 			minTotalMinutes: 750,
@@ -73,7 +73,7 @@ export const levels: LevelConfig[] = [
 		description: 'Push boundaries with 35-minute strokes',
 		strokeSeconds: 2100,
 		restSeconds: 40,
-		arousalCheckIntervalSeconds: 40,
+		arousalCheckIntervalSeconds: 420,
 		requirements: {
 			minSessions: 30,
 			minTotalMinutes: 900,
@@ -88,7 +88,7 @@ export const levels: LevelConfig[] = [
 		description: 'Master sustained arousal with 50-minute strokes',
 		strokeSeconds: 3000,
 		restSeconds: 35,
-		arousalCheckIntervalSeconds: 35,
+		arousalCheckIntervalSeconds: 480,
 		requirements: {
 			minSessions: 30,
 			minTotalMinutes: 1100,
@@ -103,7 +103,7 @@ export const levels: LevelConfig[] = [
 		description: 'Demonstrate mastery with 70-minute strokes',
 		strokeSeconds: 4200,
 		restSeconds: 30,
-		arousalCheckIntervalSeconds: 30,
+		arousalCheckIntervalSeconds: 600,
 		requirements: {
 			minSessions: 32,
 			minTotalMinutes: 1350,
@@ -118,7 +118,7 @@ export const levels: LevelConfig[] = [
 		description: 'Excel at 90-minute stroke periods',
 		strokeSeconds: 5400,
 		restSeconds: 25,
-		arousalCheckIntervalSeconds: 30,
+		arousalCheckIntervalSeconds: 720,
 		requirements: {
 			minSessions: 32,
 			minTotalMinutes: 1600,
@@ -133,7 +133,7 @@ export const levels: LevelConfig[] = [
 		description: 'Near-complete control with 105-minute strokes',
 		strokeSeconds: 6300,
 		restSeconds: 20,
-		arousalCheckIntervalSeconds: 25,
+		arousalCheckIntervalSeconds: 840,
 		requirements: {
 			minSessions: 35,
 			minTotalMinutes: 1900,
@@ -148,7 +148,7 @@ export const levels: LevelConfig[] = [
 		description: 'Ultimate mastery with 2-hour strokes',
 		strokeSeconds: 7200,
 		restSeconds: 15,
-		arousalCheckIntervalSeconds: 20,
+		arousalCheckIntervalSeconds: 900,
 		requirements: {
 			minSessions: 40,
 			minTotalMinutes: 2400,

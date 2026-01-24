@@ -9,7 +9,10 @@
 	let timerRef = $state<Timer>();
 	let running = $state(false);
 	let currentLevel = $state(1);
+	let arousalCheckInterval = $state(180);
 	let showEndConfirm = $state(false);
+	let showArousalCheck = $state(false);
+	let lastArousalCheckTime = $state(0);
 
 	const level = $derived(getLevelById(currentLevel));
 
@@ -19,6 +22,7 @@
 			if (res.ok) {
 				const settings = await res.json();
 				currentLevel = settings.currentLevel;
+				arousalCheckInterval = settings.arousalCheckInterval ?? level.arousalCheckIntervalSeconds;
 			}
 		} catch {
 			// Use defaults
@@ -79,6 +83,23 @@
 	function handlePhaseChange(phase: PhaseType) {
 		sessionStore.addPhase(phase);
 	}
+
+	function handleTick(elapsed: number) {
+		if (arousalCheckInterval > 0 && elapsed > 0 && elapsed - lastArousalCheckTime >= arousalCheckInterval) {
+			showArousalCheck = true;
+		}
+	}
+
+	function handleArousalSubmit(value: number) {
+		sessionStore.recordArousal(value);
+		lastArousalCheckTime = timerRef?.getElapsed() ?? 0;
+		showArousalCheck = false;
+	}
+
+	function handleArousalSkip() {
+		lastArousalCheckTime = timerRef?.getElapsed() ?? 0;
+		showArousalCheck = false;
+	}
 </script>
 
 <svelte:head>
@@ -116,6 +137,7 @@
 				strokeSeconds={level.strokeSeconds}
 				restSeconds={level.restSeconds}
 				onPhaseChange={handlePhaseChange}
+				onTick={handleTick}
 			/>
 
 		{#if $sessionStats}
@@ -187,6 +209,39 @@
 					End
 				</button>
 			</div>
+		</div>
+	</div>
+{/if}
+
+{#if showArousalCheck}
+	<div class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
+		<div class="bg-slate-800 rounded-2xl p-6 max-w-sm w-full space-y-4">
+			<h2 class="text-xl font-bold text-white text-center">Arousal Check</h2>
+			<p class="text-slate-400 text-center text-sm">How close are you to the edge? (1-10)</p>
+			<div class="grid grid-cols-5 gap-2">
+				{#each [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as value}
+					<button
+						onclick={() => handleArousalSubmit(value)}
+						class="py-3 px-2 rounded-xl font-bold text-lg transition-colors
+							{value <= 3 ? 'bg-green-600 hover:bg-green-500 text-white' : ''}
+							{value >= 4 && value <= 6 ? 'bg-yellow-600 hover:bg-yellow-500 text-white' : ''}
+							{value >= 7 && value <= 8 ? 'bg-orange-600 hover:bg-orange-500 text-white' : ''}
+							{value >= 9 ? 'bg-red-600 hover:bg-red-500 text-white' : ''}"
+					>
+						{value}
+					</button>
+				{/each}
+			</div>
+			<div class="flex justify-between text-xs text-slate-500 px-1">
+				<span>Low</span>
+				<span>High</span>
+			</div>
+			<button
+				onclick={handleArousalSkip}
+				class="w-full py-2 text-slate-400 hover:text-white text-sm transition-colors"
+			>
+				Skip
+			</button>
 		</div>
 	</div>
 {/if}

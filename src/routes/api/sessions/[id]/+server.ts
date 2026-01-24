@@ -1,6 +1,6 @@
 import { json, error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { getSession, saveSession } from '$lib/server/storage';
+import { getSession, saveSession, deleteSession } from '$lib/server/storage';
 import type { Session } from '$lib/types';
 
 export const GET: RequestHandler = async ({ params }) => {
@@ -19,4 +19,12 @@ export const PUT: RequestHandler = async ({ params, request }) => {
 	const session: Session = await request.json();
 	await saveSession(session);
 	return json(session);
+};
+
+export const DELETE: RequestHandler = async ({ params }) => {
+	const deleted = await deleteSession(params.id);
+	if (!deleted) {
+		throw error(404, 'Session not found');
+	}
+	return new Response(null, { status: 204 });
 };

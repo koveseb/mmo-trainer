@@ -64,6 +64,16 @@ export async function saveSettings(settings: Settings): Promise<void> {
 	await writeFile(SETTINGS_FILE, JSON.stringify(settings, null, 2));
 }
 
+export async function deleteSession(id: string): Promise<boolean> {
+	const filePath = join(SESSIONS_DIR, `${id}.json`);
+	if (!existsSync(filePath)) {
+		return false;
+	}
+	const { unlink } = await import('fs/promises');
+	await unlink(filePath);
+	return true;
+}
+
 export async function clearAllSessions(): Promise<void> {
 	await ensureDir(SESSIONS_DIR);
 	const files = await readdir(SESSIONS_DIR);
